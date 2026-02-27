@@ -1,0 +1,19 @@
+/* row */
+.row {
+  margin-left: 20px;
+  color: white;
+}
+
+/* row 컨테이너 */
+.row-posters {
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 20px;
+  gap: 10px;
+}
+
+/* 가로 스크롤바 숨기기 */
+.row-posters::-webkit-scrollbar {
+  display: none;
+}
