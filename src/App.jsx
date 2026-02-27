@@ -4,6 +4,7 @@ import requests from "./api/requests";
 import logo from "./assets/Netflix_logo.svg";
 import search_btn from "./assets/search_btn.svg";
 import Row from "./components/Row";
+import Banner from "./components/Banner";
 
 function App() {
   // 현재 카테고리의 기본 상태 = movie
@@ -22,13 +23,7 @@ function App() {
       </nav>
 
       {/* 메인 배너 */}
-      <header className="main-banner">
-        <h2>{category === "movie" ? "추천 영화" : "추천 시리즈"}</h2>
-        <div className="banner-buttons">
-          <button>▶ 재생</button>
-          <button>ⓘ 상세 정보</button>
-        </div>
-      </header>
+      <Banner />
 
       {/* 카테고리에 따른 조건부 렌더링 */}
       <main>

@@ -1,14 +1,21 @@
 /* row */
 .row {
   margin-left: 20px;
+  margin-top: 40px;
   color: white;
+}
+
+.row h3 {
+  margin-left: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
 /* row 컨테이너 */
 .row-posters {
   display: flex;
-  overflow-y: hidden;
-  overflow-x: scroll;
+  overflow-y: hidden; /* 세로 스크롤 방지*/
+  overflow-x: scroll; /* 가로 스크롤 허용*/
   padding: 20px;
   gap: 10px;
 }
@@ -16,4 +23,18 @@
 /* 가로 스크롤바 숨기기 */
 .row-posters::-webkit-scrollbar {
   display: none;
+}
+
+.poster {
+  width: 100%;
+  object-fit: contain;
+  max-height: 250px;
+  transition: transform 450ms;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.poster:hover {
+  transform: scale(1.08);
+  opacity: 1;
 }

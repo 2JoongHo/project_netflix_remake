@@ -1,0 +1,54 @@
+.main-banner {
+  display: flex;
+  height: 80vh;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 0 60px 40px;
+  color: white;
+  background-size: cover;
+  background-position: center;
+}
+
+.banner-contents {
+  /* 글자가 너무 퍼지지 않도록 */
+  max-width: 600px;
+}
+
+.banner-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-description {
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 500;
+  max-width: 100%;
+  margin-top: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.banner-button {
+  height: 40px !important;
+  width: 100px !important;
+  background-color: rgba(51, 51, 51, 0.5);
+  /* padding: 10px 25px; */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.banner-button:hover {
+  background-color: white;
+  color: black;
+  transition: all 0.2s;
+}
