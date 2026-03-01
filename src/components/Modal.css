@@ -1,0 +1,82 @@
+.modal-container {
+  z-index: 1200;
+  position: absolute;
+}
+
+.wrapper-modal {
+  position: fixed;
+  inset: 0px;
+  background-color: rgb(0 0 0 / 71%);
+  display: flex;
+  justify-content: center;
+}
+
+.modal {
+  position: relative;
+  max-width: 800px;
+  width: 90%;
+  height: 90vh;
+  margin-top: 40px;
+  background: #111;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow:
+    0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 5px 8px 0px rgba(0, 0, 0, 0.14);
+}
+
+.modal-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  z-index: 1001;
+  color: white;
+  font-size: 20px;
+}
+
+.modal-poster-container {
+  position: relative;
+  width: 100%;
+}
+
+.modal-poster {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+
+.modal-poster-buttons {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  z-index: 10;
+}
+
+.modal-content {
+  padding: 40px;
+  color: white;
+}
+
+.modal-title {
+  margin-top: 10px;
+  font-size: 2.5rem;
+}
+
+.modal-overview {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+.modal-lay-btn {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 10px 30px;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+}
