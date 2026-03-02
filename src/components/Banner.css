@@ -1,17 +1,80 @@
 .main-banner {
+  position: relative;
   display: flex;
   height: 80vh;
+  width: 100%;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-end; /* 평소엔 글자를 아래로 */
   padding: 0 0 60px 40px;
   color: white;
   background-size: cover;
   background-position: center;
+  overflow: hidden; /* 영상이 배너 밖으로 나가지 않게 */
 }
 
-.banner-contents {
-  /* 글자가 너무 퍼지지 않도록 */
+.banner-content {
+  position: relative;
+  z-index: 10; /* 영상 대기실보다 높아야 버튼이 눌림 */
   max-width: 600px;
+}
+
+/* 영상이 재생 중일 때 패딩을 없애서 꽉 차게 */
+.main-banner.video-playing {
+  padding: 0;
+  justify-content: center; /* 영상은 가운데 정렬 */
+}
+
+/* 유튜브 비디오 컨테이너 */
+.banner-video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none; /* 영상이 재생 중일 때도 버튼 클릭 허용 */
+}
+
+.main-banner.video-playing .banner-video-wrapper {
+  z-index: 100; /* 재생 시에는 모든 걸 덮고 맨 위로 */
+  pointer-events: auto; /* 이때는 영상 영역 클릭 허용 */
+}
+
+.youtube-container,
+.youtube-container > div,
+.youtube-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* react-youtube가 생성하는 iframe 스타일 */
+.banner-video-wrapper iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: none;
+  /* 여기를 none으로 두면 재생 중 영상 컨트롤이 안되므로 
+     부모(wrapper)가 auto일 때는 자연스럽게 작동하도록 둡니다. */
+  pointer-events: inherit;
+  object-fit: cover;
+}
+
+/* 닫기 버튼 */
+.banner-video-close {
+  position: absolute;
+  right: 50px;
+  top: 50px;
+  cursor: pointer;
+  z-index: 1001;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  padding: 5px;
 }
 
 .banner-title {
@@ -30,25 +93,7 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.banner-buttons {
+.banner-button {
   display: flex;
   gap: 15px;
-}
-
-.banner-button {
-  height: 40px !important;
-  width: 100px !important;
-  background-color: rgba(51, 51, 51, 0.5);
-  /* padding: 10px 25px; */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.banner-button:hover {
-  background-color: white;
-  color: black;
-  transition: all 0.2s;
 }
