@@ -1,0 +1,39 @@
+.search-result-container {
+  padding: 100px 40px;
+  background-color: #111;
+  min-height: 100vh;
+}
+
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.search-movie {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.search-movie:hover {
+  transform: scale(1.05);
+}
+
+.search-movie-poster {
+  width: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.search-movie-title {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+}
+
+.no-results {
+  text-align: center;
+  color: #fff;
+  margin-top: 100px;
+}

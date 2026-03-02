@@ -1,12 +1,12 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import tmdb from "../api/tmdb";
+import YouTube from "react-youtube";
 import requests from "../api/requests";
+import tmdb from "../api/tmdb";
+import close_btn from "../assets/x_btn.svg";
 import "./Banner.css";
 import Button from "./Button";
 import Modal from "./Modal";
-import YouTube from "react-youtube";
-import axios from "axios";
-import close_btn from "../assets/x_btn.svg";
 
 function Banner() {
   const [movie, setMovie] = useState(null);
@@ -16,72 +16,75 @@ function Banner() {
 
   useEffect(() => {
     async function fetchData() {
-      const request = await tmdb.get(requests.fetchMovieLatest);
-      const randomMovie =
-        request.data.results[
-          Math.floor(Math.random() * request.data.results.length)
-        ];
-      setMovie(randomMovie);
+      try {
+        // 1. 영화 목록 가져오기
+        const request = await tmdb.get(requests.fetchMovieLatest);
+        // 2. 랜덤 영화 한 개 확정 (변수에 저장)
+        const selectedMovie =
+          request.data.results[
+            Math.floor(Math.random() * request.data.results.length)
+          ];
 
-      if (randomMovie) {
-        fetchVideoId(randomMovie);
+        // 3. 화면에 보여줄 영화 상태 업데이트
+        setMovie(selectedMovie);
+
+        // 4. [핵심] 확정된 selectedMovie의 ID로 즉시 비디오 찾기 시작
+        if (selectedMovie) {
+          const mediaType = selectedMovie.title ? "movie" : "tv";
+          const currentId = selectedMovie.id;
+
+          // TMDB에서 비디오 정보 요청
+          let response = await tmdb.get(`/${mediaType}/${currentId}/videos`);
+          let videos = response.data.results;
+
+          if (videos.length === 0) {
+            response = await tmdb.get(
+              `/${mediaType}/${currentId}/videos?language=en-US`
+            );
+            videos = response.data.results;
+          }
+          if (videos.length === 0) {
+            response = await tmdb.get(
+              `/${mediaType}/${currentId}/videos?language=`
+            );
+            videos = response.data.results;
+          }
+
+          let finalVideo =
+            videos.find((v) => v.type === "Trailer" && v.site === "YouTube") ||
+            videos.find((v) => v.site === "YouTube") ||
+            videos[0];
+
+          if (finalVideo) {
+            setTrailerId(finalVideo.key);
+          } else {
+            // TMDB에 없으면 유튜브 검색
+            const YOUTUBE_API_KEY = "AIzaSyA5BN9TC2POB5YWCYZjJiPAGtjskV--mtw";
+            const movieName = selectedMovie.title || selectedMovie.name;
+            const youtubeSearchResponse = await axios.get(
+              `https://www.googleapis.com/youtube/v3/search`,
+              {
+                params: {
+                  part: "snippet",
+                  q: `${movieName} official trailer`,
+                  maxResults: 1,
+                  type: "video",
+                  videoEmbeddable: "true",
+                  key: YOUTUBE_API_KEY,
+                },
+              }
+            );
+            const searchedVideoId =
+              youtubeSearchResponse.data.items[0]?.id?.videoId;
+            setTrailerId(searchedVideoId || "");
+          }
+        }
+      } catch (error) {
+        console.error("데이터 로딩 중 에러 발생:", error);
       }
     }
     fetchData();
   }, []);
-
-  const fetchVideoId = async (currentMovie) => {
-    try {
-      const mediaType = currentMovie.title ? "movie" : "tv";
-      const currentId = currentMovie.id;
-
-      let response = await tmdb.get(`/${mediaType}/${currentId}/videos`);
-      let videos = response.data.results;
-
-      if (videos.length === 0) {
-        response = await tmdb.get(
-          `/${mediaType}/${currentId}/videos?language=en-US`,
-        );
-        videos = response.data.results;
-      }
-      if (videos.length === 0) {
-        response = await tmdb.get(
-          `/${mediaType}/${currentId}/videos?language=`,
-        );
-        videos = response.data.results;
-      }
-
-      let finalVideo =
-        videos.find((v) => v.type === "Trailer" && v.site === "YouTube") ||
-        videos.find((v) => v.site === "YouTube") ||
-        videos[0];
-
-      if (finalVideo) {
-        setTrailerId(finalVideo.key);
-      } else {
-        const YOUTUBE_API_KEY = "AIzaSyA5BN9TC2POB5YWCYZjJiPAGtjskV--mtw";
-        const movieName = currentMovie.title || currentMovie.name;
-        const youtubeSearchResponse = await axios.get(
-          `https://www.googleapis.com/youtube/v3/search`,
-          {
-            params: {
-              part: "snippet",
-              q: `${movieName} official trailer`,
-              maxResults: 1,
-              type: "video",
-              videoEmbeddable: "true",
-              key: YOUTUBE_API_KEY,
-            },
-          },
-        );
-        const searchedVideoId =
-          youtubeSearchResponse.data.items[0]?.id?.videoId;
-        if (searchedVideoId) setTrailerId(searchedVideoId);
-      }
-    } catch (error) {
-      console.error("배너 비디오 로딩 실패:", error);
-    }
-  };
 
   const handlePlayClick = () => {
     if (trailerId) {
@@ -119,7 +122,7 @@ function Banner() {
                   rel: 0,
                   mute: 1,
                   modestbranding: 1,
-                  controls: 1, // 컨트롤 버튼 활성화
+                  controls: 1,
                 },
               }}
               onEnd={() => setIsPlaying(false)}
